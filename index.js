@@ -19,12 +19,32 @@ module.exports = function(content) {
   }
 
   if (settings.defDir) {
-    def = new Proxy({}, {
+    def = new Proxy({
+        __exp: {}
+    }, {
       _dir: settings.defDir,
+      _argTest: settings.defArg && (settings.defArg.exec ? settings.defArg : new RegExp(settings.defArg)),
       get: function(target, property) {
+          if(target.hasOwnProperty(property)) {
+              return target[property];
+          }
         var defFile = path.resolve(this._dir, property + '.def');
         loaderContext.addDependency(defFile);
-        return fs.readFileSync(defFile);
+        var content = fs.readFileSync(defFile).toString();
+        if (!this._argTest) {
+          return content;
+        }
+
+        var lines = content.split(/\n/);
+        var match = this._argTest.exec(lines[0]);
+        if (match && match[1]) {
+            return {
+                arg: match[1],
+                text: lines.slice(1).join("\n")
+            }
+        } else {
+            return content;
+        }
       }
     });
 

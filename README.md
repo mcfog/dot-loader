@@ -59,3 +59,6 @@ invoke your partial with
 {{#def.PARTIAL_NAME}}
 ```
 
+set `defArg` query param to a regex against first line of your PARTIAL_NAME.def to support partial param
+
+
