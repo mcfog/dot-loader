@@ -9,7 +9,10 @@ module.exports = function(content) {
   
   var settings = Object.assign({}, dot.templateSettings, {
     selfcontained: true
-  }, utils.parseQuery(this.query));
+  });
+  if (this.query) {
+    Object.assign(settings, utils.parseQuery(this.query));
+  }
 
   var content = fs.readFileSync(this.resourcePath);
 
