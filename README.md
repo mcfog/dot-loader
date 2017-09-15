@@ -22,3 +22,40 @@ module.exports = {
 ```
 
 Then you only need to write: `require("./file.dot")`
+
+### templateSettings
+
+loader's query would be parsed as dot settings
+
+
+``` javascript
+module.exports = {
+  module: {
+    loaders: [
+      { test: /\.dot$/, loader: "dot-loader", query: { strip: false } }
+    ]
+  }
+};
+```
+
+### partial support
+
+put your PARTIAL_NAME.def files under a folder, and specify that in `defDir` query param
+
+
+``` javascript
+module.exports = {
+  module: {
+    loaders: [
+      { test: /\.dot$/, loader: "dot-loader", query: { defDir: YOUR_DEF_DIR } }
+    ]
+  }
+};
+```
+
+invoke your partial with
+
+``` dot
+{{#def.PARTIAL_NAME}}
+```
+
